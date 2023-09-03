@@ -1,7 +1,7 @@
 using EspacioCliente;
 namespace EspacioPedido
 {
-    class Pedido
+    public class Pedido
     {
         private int numero;
         private string? observacion;
