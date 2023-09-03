@@ -2,7 +2,7 @@ using EspacioCadete;
 using EspacioPedido;
 namespace EspacioCadeteria
 {
-    class Cadeteria
+    public class Cadeteria
     {
         private string? nombre;
         private string? telefonoCadeteria;
@@ -19,23 +19,16 @@ namespace EspacioCadeteria
             telefonoCadeteria = telCadeteria;
         }
 
-        public Pedido CrearPedido(int numeroP, string observacionP, bool estadoP, string nombreC, string direccionC, string telC, string refDireccionC) //recibo los datos del pedido, mas los datos del cliente
+        public bool  CrearPedido(int numeroP, string observacionP, bool estadoP, string nombreC, string direccionC, string telC, string refDireccionC, int idCadete) //recibo los datos del pedido, mas los datos del cliente
         {
             var nuevoPedido = new Pedido(numeroP, observacionP, estadoP, nombreC, direccionC, telC, refDireccionC);
-            return nuevoPedido;
-        }
-        public bool AsignarPedido(Pedido pedido, int idCadete)
-        {
-            foreach (var cadete in ListaCadete)
+            var CadeteEncontrado = EncontrarCadetePorId(idCadete);
+            if (CadeteEncontrado!=null)
             {
-                if (cadete.Id == idCadete)
-                {
-                    cadete.AgregarUnPedido(pedido);
-                    return true;
-                }
+                CadeteEncontrado.AgregarUnPedido(nuevoPedido);
+                return true;
             }
             return false;
-
         }
         public void EliminarPedido(int numeroP)
         {
@@ -64,6 +57,7 @@ namespace EspacioCadeteria
                     }
 
                 }
+                
                 foreach (var cadete in ListaCadete) //busco al cadete por id
                 {
                     if (cadete.Id == idCadete)
@@ -113,6 +107,19 @@ namespace EspacioCadeteria
             }
             return null;
 
+        }
+
+        private Cadete? EncontrarCadetePorId(int idCadete)
+        {
+            foreach (var cadete in ListaCadete)
+            {
+                if (cadete.Id==idCadete)
+                { 
+                    return cadete; 
+                } 
+            }
+            return null;
+             
         }
 
 
