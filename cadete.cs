@@ -1,13 +1,13 @@
 using EspacioPedido;
-using EspacioCadeteria;
 
 namespace EspacioCadete
 {
-    class Cadete
+    public class Cadete
     {
         private static int pedidoEntregado = 500;
         private int id;
         private string? nombre;
+        private string? telefono;
         private string? direccion;
         private List<Pedido>listaPedidos; // agregacion
 
@@ -16,17 +16,21 @@ namespace EspacioCadete
         public string? Nombre { get => nombre; set => nombre = value; }
         public string? Direccion { get => direccion; set => direccion = value; }
         internal List<Pedido> ListaPedidos { get => listaPedidos; set => listaPedidos = value; }
-        public Cadete (int id, string nombreCadete, string direccionCadete,List<Pedido>Pedidios)
+        public string? Telefono { get => telefono; set => telefono = value; }
+
+        public Cadete (int id, string nombreCadete, string direccionCadete,string TelCadete)
         {
             Id = id;
             Nombre = nombreCadete;
             Direccion = direccionCadete;
-            ListaPedidos = Pedidios;
-        } 
+            Telefono = TelCadete;
+            listaPedidos = new List<Pedido>();
+        }
+        public Cadete(){}
 
         public void AgregarUnPedido (Pedido nuevoPedido) //hace uso del crear pedido de cadeteria 
         {
-            if (nuevoPedido!=null)ListaPedidos.Add(nuevoPedido);
+            ListaPedidos.Add(nuevoPedido);
         }
         public void CambiarEstadoPedido(int numeroPedido)
         {
