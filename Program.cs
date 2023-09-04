@@ -1,12 +1,15 @@
 ﻿using EspacioCadete;
 using EspacioCadeteria;
 using EspacioHelperCsv;
+using EspacioInforme;
 internal class Program
 {
     private static void Main(string[] args)
     {
-        List<Cadete> listaCadetes = HerramientasCsv.ObtenerListaCadetes("DatosCadetes.csv");
-        string []DatosCad = HerramientasCsv.ObtenerDatosCadeteria("DatosCadeteria.csv");
+        const string CsvDcadeteria =  "DatosCadeteria.csv";
+        const string CsvDcadetes =  "DatosCadetes.csv";
+        List<Cadete> listaCadetes = HerramientasCsv.ObtenerListaCadetes(CsvDcadetes);
+        string []DatosCad = HerramientasCsv.ObtenerDatosCadeteria(CsvDcadeteria);
         var variableCadeteria = new Cadeteria(DatosCad[0],DatosCad[1],listaCadetes);
         int option;
         const int MaxOption = 4;
@@ -55,13 +58,15 @@ internal class Program
                     Console.WriteLine("Ingrese el numero ID del cadete\n");
                     ValidarNumero(out idCadete);
                     if(variableCadeteria.ReasignarPedido(idCadete,numeroPedido)) Console.WriteLine("Pedido Reasignado");
-                    else Console.WriteLine("numero de pedido o identificador invalido");
+                    else Console.WriteLine("Error: numero de pedido, identificador invalido o pedido ya entregado");
 
                 break;
 
             }
             
         } while (option != MaxOption);
+        var SolicitudDeinforme = new Informe(variableCadeteria);
+        SolicitudDeinforme.MostrarInforme();
 
         void Menu_Option(out int option)
         {
