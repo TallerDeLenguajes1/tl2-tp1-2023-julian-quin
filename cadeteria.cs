@@ -6,107 +6,76 @@ namespace EspacioCadeteria
     {
         private string? nombre;
         private string? telefonoCadeteria;
-        private List<Cadete> listaCadete; //dijo que es conveniente inicializar en el constructor (min 28)
+        private List<Cadete> listaCadete;
+        private List<Pedido>listaPedidos; 
 
         public string? Nombre { get => nombre; set => nombre = value; }
         public string? TelefonoCadeteria { get => telefonoCadeteria; set => telefonoCadeteria = value; }
         internal List<Cadete> ListaCadete { get => listaCadete; set => listaCadete = value; }
+        public List<Pedido> ListaPedidos { get => listaPedidos; set => listaPedidos = value; }
 
-        public Cadeteria(string NombreCadeteria, string telCadeteria, List<Cadete> cadetesLista) //constructor
+        public Cadeteria(string NombreCadeteria, string telCadeteria, List<Cadete> cadetesLista) 
         {
             ListaCadete = cadetesLista;
             Nombre = NombreCadeteria;
             telefonoCadeteria = telCadeteria;
+            listaPedidos = new List<Pedido>(); //error sino instancio!!
         }
 
-        public bool  CrearPedido(int numeroP, string observacionP, bool estadoP, string nombreC, string direccionC, string telC, string refDireccionC, int idCadete) //recibo los datos del pedido, mas los datos del cliente
+        public bool  CrearPedido(int numeroP, string observacionP, bool estadoP, string nombreC, string direccionC, string telC, string refDireccionC) 
         {
             var nuevoPedido = new Pedido(numeroP, observacionP, estadoP, nombreC, direccionC, telC, refDireccionC);
-            var CadeteEncontrado = EncontrarCadetePorId(idCadete);
-            if (CadeteEncontrado!=null)
+            if (nuevoPedido!=null)
             {
-                CadeteEncontrado.AgregarUnPedido(nuevoPedido);
+                ListaPedidos.Add(nuevoPedido);
+                return true;   
+            }
+          
+            return false;
+        }
+        public bool AsignarCadeteAPedido( int idCadete , int numeroP)
+        {
+            var CadeteEncontrado = EncontrarCadetePorId(idCadete);
+            var PedidoEncontado = EncontrarPedido(numeroP);
+            if (CadeteEncontrado!=null && PedidoEncontado!=null)
+            {
+                PedidoEncontado.AsignarCadete(CadeteEncontrado);
                 return true;
             }
             return false;
         }
         public void EliminarPedido(int numeroP)
         {
-            var CadeteEncontrado = EncontrarCadetePorPedido(numeroP);
-            if (CadeteEncontrado != null)
+            var PedidoEncontrado = EncontrarPedido(numeroP);
+            if (PedidoEncontrado!=null)
             {
-                CadeteEncontrado.EliminarPedido(numeroP);
+                ListaPedidos.Remove(PedidoEncontrado);
             }
-
         }
-        public bool ReasignarPedido(int idCadete, int numeroP)
+        public bool ReasignarCadeteApedido(int idCadete, int numeroP)
         {
-            var Reasignar = new Pedido();
-            bool[] retorno = new bool[]{false,false};
-            var CadeteEncontrado = EncontrarCadetePorPedido(numeroP);
-            if (CadeteEncontrado != null)
+            var CadeteEncontrado = EncontrarCadetePorId(idCadete);
+            var PedidoEncontado = EncontrarPedido(numeroP);
+            if (CadeteEncontrado != null && PedidoEncontado!=null)
             {
-                foreach (var pedido in CadeteEncontrado.ListaPedidos)// busco el pedido del cadete, apartir del numero de pedido
-                {
-                    if (numeroP == pedido.Numero)
-                    {
-                        Reasignar = pedido;
-                        CadeteEncontrado.EliminarPedido(numeroP);
-                        retorno[0]=true;
-                        break;
-                    }
-
-                }
-                
-                foreach (var cadete in ListaCadete) //busco al cadete por id
-                {
-                    if (cadete.Id == idCadete)
-                    {
-                        cadete.AgregarUnPedido(Reasignar);
-                        retorno[1]=true;
-                        break;
-                    }
-                }
-                if((retorno[1] && retorno[0])==true) return true;
-                
+                PedidoEncontado.AsignarCadete(CadeteEncontrado);  
+                return true;
             }
             return false;
         }
         public bool CambiarEstadoPedido(int numeroP)
         {
-            var Cadete = EncontrarCadetePorPedido(numeroP);
-            if (Cadete != null)
+            var PedidoEncontrado= EncontrarPedido(numeroP);
+            if(PedidoEncontrado!=null)
             {
-                foreach (var pedido in Cadete.ListaPedidos)
+                if (PedidoEncontrado.Cadete!=null)
                 {
-                    if (pedido.Numero == numeroP)
-                    {
-                        Cadete.CambiarEstadoPedido(numeroP);
-                        return true;
-                    }
-                }
-                return false;
-
-            }
-            else return false;
-
-        }
-
-        private Cadete? EncontrarCadetePorPedido(int numeroP) // buscar el cadete directamente 
-        {
-            foreach (var cadete in ListaCadete)
-            {
-                foreach (var pedido in cadete.ListaPedidos)
-                {
-                    if (pedido.Numero == numeroP)
-                    {
-                        return cadete;
-                    }
+                    PedidoEncontrado.CambiarEstado();
+                    return true;
                 }
 
             }
-            return null;
-
+            return false;
         }
 
         private Cadete? EncontrarCadetePorId(int idCadete)
@@ -120,6 +89,19 @@ namespace EspacioCadeteria
             }
             return null;
              
+        }
+        private Pedido? EncontrarPedido(int numeroP)
+        {
+            foreach (var pedido in ListaPedidos)
+            {
+                if (numeroP == pedido.Numero)
+                {
+                    return pedido;
+                }
+                
+            }
+            return null;
+
         }
 
 
