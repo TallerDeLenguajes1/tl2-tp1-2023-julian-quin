@@ -6,13 +6,13 @@ namespace EspacioCadeteria
     {
         private string? nombre;
         private string? telefonoCadeteria;
-        private List<Cadete> listaCadete; //dijo que es conveniente inicializar en el constructor (min 28)
+        private List<Cadete> listaCadete; 
 
         public string? Nombre { get => nombre; set => nombre = value; }
         public string? TelefonoCadeteria { get => telefonoCadeteria; set => telefonoCadeteria = value; }
         internal List<Cadete> ListaCadete { get => listaCadete; set => listaCadete = value; }
 
-        public Cadeteria(string NombreCadeteria, string telCadeteria, List<Cadete> cadetesLista) //constructor
+        public Cadeteria(string NombreCadeteria, string telCadeteria, List<Cadete> cadetesLista)
         {
             ListaCadete = cadetesLista;
             Nombre = NombreCadeteria;
@@ -70,7 +70,7 @@ namespace EspacioCadeteria
 
         }
 
-        private Cadete? EncontrarCadetePorPedido(int numeroP) // buscar el cadete directamente 
+        private Cadete? EncontrarCadetePorPedido(int numeroP)  
         {
             foreach (var cadete in ListaCadete)
             {
