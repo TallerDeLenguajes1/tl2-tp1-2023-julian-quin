@@ -1,3 +1,4 @@
+using EspacioCadete;
 using EspacioCliente;
 namespace EspacioPedido
 {
@@ -6,17 +7,21 @@ namespace EspacioPedido
         private int numero;
         private string? observacion;
         private Cliente cliente; //composicion 
+        private Cadete cadete;
         private bool estado;
         
         public bool Estado { get => estado; set => estado = value; }
         public int Numero { get => numero; set => numero = value; }
         public string? Observacion { get => observacion; set => observacion = value; }
         internal Cliente Cliente { get => cliente; set => cliente = value; }
+        public Cadete Cadete { get => cadete; set => cadete = value; }
+
         public Pedido (int numero, string observacion, bool estado, string nombreCliente, string direccionCliente, string telCliente, string refDireccionCliente)
         {
             Numero = numero;
             Observacion = observacion;
             Estado = estado;
+            Cadete = new Cadete();
             Cliente = new Cliente(nombreCliente,direccionCliente,telCliente,refDireccionCliente);
         }
         public Pedido (){}
@@ -32,6 +37,10 @@ namespace EspacioPedido
         public void CambiarEstado ()
         {
             Estado = true;
+        }
+        public void AsignarCadete(Cadete cadete)
+        {
+            Cadete = cadete;
         }
     }
 }
