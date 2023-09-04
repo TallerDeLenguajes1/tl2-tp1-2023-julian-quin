@@ -39,7 +39,7 @@ namespace EspacioCadeteria
             {
                 foreach (var pedido in CadeteEncontradoA.ListaPedidos)
                 {
-                    if (pedido.Numero == numeroP)
+                    if ((pedido.Numero == numeroP) && (pedido.Estado!=true) )
                     {
                         CadeteEncontradoR.AgregarUnPedido(pedido);
                         CadeteEncontradoA.EliminarPedido(numeroP);
@@ -57,7 +57,7 @@ namespace EspacioCadeteria
             {
                 foreach (var pedido in Cadete.ListaPedidos)
                 {
-                    if (pedido.Numero == numeroP)
+                    
                     {
                         Cadete.CambiarEstadoPedido(numeroP);
                         return true;
