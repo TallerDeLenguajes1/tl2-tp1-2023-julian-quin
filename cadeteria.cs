@@ -30,45 +30,23 @@ namespace EspacioCadeteria
             }
             return false;
         }
-        public void EliminarPedido(int numeroP)
-        {
-            var CadeteEncontrado = EncontrarCadetePorPedido(numeroP);
-            if (CadeteEncontrado != null)
-            {
-                CadeteEncontrado.EliminarPedido(numeroP);
-            }
-
-        }
         public bool ReasignarPedido(int idCadete, int numeroP)
         {
-            var Reasignar = new Pedido();
-            bool[] retorno = new bool[]{false,false};
-            var CadeteEncontrado = EncontrarCadetePorPedido(numeroP);
-            if (CadeteEncontrado != null)
-            {
-                foreach (var pedido in CadeteEncontrado.ListaPedidos)// busco el pedido del cadete, apartir del numero de pedido
-                {
-                    if (numeroP == pedido.Numero)
-                    {
-                        Reasignar = pedido;
-                        CadeteEncontrado.EliminarPedido(numeroP);
-                        retorno[0]=true;
-                        break;
-                    }
+            var CadeteEncontradoA = EncontrarCadetePorPedido(numeroP);// busco el cadete que ya tiene el pedido
+            var CadeteEncontradoR = EncontrarCadetePorId(idCadete);// busco el cadete al que se va a reasignar el pedido
 
-                }
-                
-                foreach (var cadete in ListaCadete) //busco al cadete por id
+            if (CadeteEncontradoA!=null && CadeteEncontradoR!=null)
+            {
+                foreach (var pedido in CadeteEncontradoA.ListaPedidos)
                 {
-                    if (cadete.Id == idCadete)
+                    if (pedido.Numero == numeroP)
                     {
-                        cadete.AgregarUnPedido(Reasignar);
-                        retorno[1]=true;
-                        break;
+                        CadeteEncontradoR.AgregarUnPedido(pedido);
+                        CadeteEncontradoA.EliminarPedido(numeroP);
+                        return true;
                     }
+                    
                 }
-                if((retorno[1] && retorno[0])==true) return true;
-                
             }
             return false;
         }
