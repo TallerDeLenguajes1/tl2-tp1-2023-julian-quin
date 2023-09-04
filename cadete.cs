@@ -66,7 +66,7 @@ namespace EspacioCadete
             {
                 if(pedido.Estado==true) jornal += PedidoEntregado;
             }
-            return PedidoEntregado;
+            return jornal;
         }
 
     }
