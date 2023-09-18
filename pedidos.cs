@@ -2,21 +2,29 @@ using EspacioCadete;
 using EspacioCliente;
 namespace EspacioPedido
 {
+    public enum EstadosPedido
+    {
+        Entregado,
+        Asignado,
+        Pendiente,
+        cancelado,    
+    }
     public class Pedido
     {
         private int numero;
-        private string? observacion;
+        private string observacion;
         private Cliente cliente; //composicion 
         private Cadete cadete;
-        private bool estado;
+        private EstadosPedido estado;
         
-        public bool Estado { get => estado; set => estado = value; }
+        
         public int Numero { get => numero; set => numero = value; }
-        public string? Observacion { get => observacion; set => observacion = value; }
-        internal Cliente Cliente { get => cliente; set => cliente = value; }
+        public string Observacion { get => observacion; set => observacion = value; }
         public Cadete Cadete { get => cadete; set => cadete = value; }
+        public EstadosPedido Estado { get => estado; set => estado = value; }
+        public Cliente Cliente { get => cliente; set => cliente = value; }
 
-        public Pedido (int numero, string observacion, bool estado, string nombreCliente, string direccionCliente, string telCliente, string refDireccionCliente)
+        public Pedido (int numero, string observacion, EstadosPedido estado, string nombreCliente, string direccionCliente, string telCliente, string refDireccionCliente)
         {
             Numero = numero;
             Observacion = observacion;
@@ -34,9 +42,17 @@ namespace EspacioPedido
         {
             return Cliente;
         }
-        public void CambiarEstado ()
+        public void PedidoEntregado()
         {
-            Estado = true;
+            Estado = EstadosPedido.Entregado;
+        }
+        public void PedidoCancelado()
+        {
+            Estado = EstadosPedido.cancelado;
+        }
+        public void PedidoAsignado()
+        {
+            Estado = EstadosPedido.Asignado;
         }
         public void AsignarCadete(Cadete cadete)
         {
